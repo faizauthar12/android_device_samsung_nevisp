@@ -185,8 +185,8 @@ BOARD_HARDWARE_CLASS := hardware/samsung/cmhw/ device/samsung/nevisp/cmhw/
 MALLOC_IMPL := dlmalloc
 
 # SELinux
-BOARD_SEPOLICY_DIRS += \
-    device/samsung/nevisp/sepolicy
+# BOARD_SEPOLICY_DIRS += \
+#    device/samsung/nevisp/sepolicy
 
 #DEVICE_RESOLUTION := 320x480
 #TARGET_PREBUILT_RECOVERY_KERNEL := device/samsung/nevisp/kernel/zImage
