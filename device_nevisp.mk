@@ -99,7 +99,11 @@ USE_CUSTOM_AUDIO_POLICY := 1
 
 # Device-specific packages
 PRODUCT_PACKAGES += \
-	SamsungServiceMode 
+	SamsungServiceMode
+
+# CM Snap
+PRODUCT_PACKAGES += \
+	Snap 
 	
 # Charger
 PRODUCT_PACKAGES += \
