@@ -84,6 +84,7 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 8388608
+BOARD_CACHEIMAGE_PARTITION_SIZE := 573741824
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 939524096
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 2236070912
 BOARD_FLASH_BLOCK_SIZE := 131072
@@ -156,6 +157,7 @@ BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charg
 
 # RIL
 BOARD_RIL_CLASS := ../../../device/samsung/nevisp/ril/
+COMMON_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
 
 # Recovery
 TARGET_RECOVERY_FSTAB := device/samsung/nevisp/recovery/fstab.rhea_ss_nevisp
@@ -179,38 +181,13 @@ BOARD_HAL_STATIC_LIBRARIES := libhealthd.rhea
 # CMHW
 BOARD_HARDWARE_CLASS := hardware/samsung/cmhw/ device/samsung/nevisp/cmhw/
 
-# jemalloc causes a lot of random crash on free()
+# Malloc Implementation
 MALLOC_IMPL := dlmalloc
-
-# Compat
-TARGET_USES_LOGD := false
-
-# SkTextBox for libtvout
-BOARD_USES_SKTEXTBOX := true
 
 # SELinux
 BOARD_SEPOLICY_DIRS += \
     device/samsung/nevisp/sepolicy
 
-BOARD_SEPOLICY_UNION += \
-    file_contexts \
-    property_contexts \
-    service_contexts \
-    bkmgrd.te \
-    device.te \
-    geomagneticd.te \
-    gpsd.te \
-    init.te \
-    immvibed.te \
-    kernel.te \
-    macloader.te \
-    rild.te \
-    shell.te \
-    system_server.te \
-    tvserver.te \
-    vclmk.te
-
-#TWRP Recovery
 #DEVICE_RESOLUTION := 320x480
 #TARGET_PREBUILT_RECOVERY_KERNEL := device/samsung/nevisp/kernel/zImage
 #TARGET_RECOVERY_FSTAB = device/samsung/nevisp/recovery/twrp.fstab

@@ -78,6 +78,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	com.android.future.usb.accessory
 
+# RIL
+PRODUCT_PACKAGES += \
+    libstlport \
+
 # Audio modules
 PRODUCT_PACKAGES += \
 	audio.a2dp.default \

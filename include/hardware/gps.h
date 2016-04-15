@@ -309,6 +309,8 @@ typedef uint32_t GpsMeasurementFlags;
 #define GPS_MEASUREMENT_HAS_DOPPLER_SHIFT_UNCERTAINTY         (1<<16)
 /** A valid 'used in fix' flag is stored in the data structure. */
 #define GPS_MEASUREMENT_HAS_USED_IN_FIX                       (1<<17)
+/** The value of 'pseudorange rate' is uncorrected. */
+#define GPS_MEASUREMENT_HAS_UNCORRECTED_PSEUDORANGE_RATE      (1<<18)
 
 /**
  * Enumeration of the available values for the GPS Measurement's loss of lock.
@@ -615,6 +617,12 @@ typedef struct {
      * min_interval represents the time between fixes in milliseconds.
      * preferred_accuracy represents the requested fix accuracy in meters.
      * preferred_time represents the requested time to first fix in milliseconds.
+     *
+     * 'mode' parameter should be one of GPS_POSITION_MODE_MS_BASE
+     * or GPS_POSITION_MODE_STANDALONE.
+     * It is allowed by the platform (and it is recommended) to fallback to
+     * GPS_POSITION_MODE_MS_BASE if GPS_POSITION_MODE_MS_ASSISTED is passed in, and
+     * GPS_POSITION_MODE_MS_BASED is supported.
      */
     int   (*set_position_mode)(GpsPositionMode mode, GpsPositionRecurrence recurrence,
             uint32_t min_interval, uint32_t preferred_accuracy, uint32_t preferred_time);
@@ -660,6 +668,12 @@ typedef struct {
     size_t (*get_internal_state)(char* buffer, size_t bufferSize);
 } GpsDebugInterface;
 
+#pragma pack(push,4)
+// We need to keep the alignment of this data structure to 4-bytes, to ensure that in 64-bit
+// environments the size of this legacy definition does not collide with _v2. Implementations should
+// be using _v2 and _v3, so it's OK to pay the 'unaligned' penalty in 64-bit if an old
+// implementation is still in use.
+
 /** Represents the status of AGPS. */
 typedef struct {
     /** set to sizeof(AGpsStatus_v1) */
@@ -668,6 +682,8 @@ typedef struct {
     AGpsType        type;
     AGpsStatusValue status;
 } AGpsStatus_v1;
+
+#pragma pack(pop)
 
 /** Represents the status of AGPS augmented with a IPv4 address field. */
 typedef struct {
@@ -1351,6 +1367,9 @@ typedef struct {
      *
      * The value contains the 'drift uncertainty' in it.
      * If the data is available 'flags' must contain GPS_CLOCK_HAS_DRIFT.
+     *
+     * If GpsMeasurement's 'flags' field contains GPS_MEASUREMENT_HAS_UNCORRECTED_PSEUDORANGE_RATE,
+     * it is encouraged that this field is also provided.
      */
     double drift_nsps;
 
